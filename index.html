@@ -59,7 +59,25 @@
     </div>
 </main>
 <script>
-
+    function toggleGridSelection(event) {
+        var grid = event.target; 
+        var clickCount = grid.getAttribute('data-click-count') || 0;
+        clickCount = parseInt(clickCount, 10); 
+        grid.classList.remove('yellow');
+        switch (clickCount) {
+            case 0:
+                grid.classList.add('yellow');
+                break;
+            case 1:
+                clickCount = -1;
+                break;
+        }
+        clickCount += 1;
+        grid.setAttribute('data-click-count', clickCount.toString());
+	}
+	document.querySelectorAll('.grid-item').forEach(function (grid) {
+        grid.addEventListener('click', toggleGridSelection);
+    });
 </script>
 </body>
 </html>
