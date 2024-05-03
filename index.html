@@ -2,59 +2,48 @@
 <html>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <!-- 設定文件的內容類型和字符編碼 -->
-
-    <title>可點擊網格</title> <!-- 設定網頁標題 -->
-
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>可點擊網格</title>
     <style>
         * {
-            font-family: Arial; /* 設定全 HTML 字體為 Arial */
+            font-family: Arial;
         }
-
         header, footer {
-            background-color: #666666; /* 設定 header 和 footer 的背景顏色 */
-            color: #FFFFFF; /* 設定 header 和 footer 的文字顏色 */
-            text-align: center; /* 文字居中對齊 */
-            padding: 10px; /* 內邊距設定 */
+            background-color: #666666;
+            color: #FFFFFF;
+            text-align: center;
+            padding: 10px;
         }
-
         main {
-            padding: 10px 0; /* 上下留白 */
+            padding: 10px 0;
         }
-
         .grid-container {
-            display: grid; /* 設定為網格布局 */
-            grid-template-columns: repeat(3, 1fr); /* 創建三列等寬布局，容器寬度變化時自動調整 */
-            grid-gap: 10px; /* 卡片之間的間隙 */
-            width: 240px; /* 網格的總寬度 */
-            margin: auto; /* 將網格置於頁面中央 */
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 10px;
+            width: 240px;
+            margin: auto;
         }
-
         .grid-item {
-            display: grid; /* 設定為網格布局 */
-            width: 80px; /* 每個網格項目的固定寬度 */
-            height: 80px; /* 每個網格項目的固定高度 */
-            justify-content: center; /* 水平居中對齊 */
-            align-items: center; /* 垂直居中對齊 */
-            background-color: #F0F0F0; /* 灰色背景 */
-            cursor: pointer; /* 指示元素可點擊 */
+            display: grid;
+            width: 80px;
+            height: 80px;
+            justify-content: center;
+            align-items: center;
+            background-color: #F0F0F0;
+            cursor: pointer;
         }
-
         .yellow {
-            background-color: #ff0; /* 黃色背景 */
+            background-color: #ff0;
         }
     </style>
 </head>
-
 <body>
-
 <header>
-    <h1>可點擊網格</h1> <!-- 頁面標題 -->
+    <h1>可點擊網格</h1>
 </header>
-
 <main>
     <div class="grid-container">
-        <!-- 添加9個div以形成3x3網格 -->
         <div id="grid1" class="grid-item">1</div>
         <div id="grid2" class="grid-item">2</div>
         <div id="grid3" class="grid-item">3</div>
@@ -64,59 +53,38 @@
         <div id="grid7" class="grid-item">7</div>
         <div id="grid8" class="grid-item">8</div>
         <div id="grid9" class="grid-item">9</div>
+        <div id="grid1" class="grid-item">10</div>
+        <div id="grid2" class="grid-item">11</div>
+        <div id="grid3" class="grid-item">12</div>
+        <div id="grid4" class="grid-item">13</div>
+        <div id="grid5" class="grid-item">14</div>
+        <div id="grid6" class="grid-item">15</div>
+        <div id="grid7" class="grid-item">16</div>
     </div>
 </main>
-
 <footer>
-    <b>單元五練習三 (2024.01.26)</b> <!-- 頁腳信息 -->
+    <b>單元五練習三 (2024.01.26)</b>
 </footer>
-
 <script>
-    // 定義 toggleGridSelection 函數，該函數會在網格項目被點擊時被呼叫
     function toggleGridSelection(event) {
-        // event.target 取得觸發事件的元素，即被點擊的卡片
         var grid = event.target; 
-        
-        // 使用 getAttribute 方法從卡片元素上獲取 'data-click-count' 屬性值，該值用於記錄該卡片被點擊的次數
-        // 如果 'data-click-count' 不存在（即第一次點擊），則默認為 0
         var clickCount = grid.getAttribute('data-click-count') || 0;
-        
-        // 使用 parseInt 函數將點擊次數（目前是字符串）轉換為整數類型，以便進行數學運算
         clickCount = parseInt(clickCount, 10); 
-
-        // 移除卡片元素的 'yellow' 類別，重置顏色為初始狀態（灰色）
-        // 這樣做是為了確保我們可以正確地應用新的顏色類別
         grid.classList.remove('yellow');
-
-        // 根據卡片目前的點擊次數，決定卡片的下一步行為
         switch (clickCount) {
             case 0:
-                // 如果點擊次數為0（即第一次點擊） - 將卡片的背景顏色設為黃色
                 grid.classList.add('yellow');
                 break;
             case 1:
-                // 如果點擊次數為1（即第二次點擊） - 重置顏色為灰色，為此將 clickCount 重置為 -1
-                // 因為在本函數的最後，clickCount 會增加1，所以實際上它會被設定為0，準備下一輪的點擊
                 clickCount = -1;
                 break;
         }
-
-        // 將點擊次數增加 1，準備下一次點擊
         clickCount += 1;
-        
-        // 使用 setAttribute 方法更新卡片元素的 'data-click-count' 屬性值
-        // 將點擊次數轉換為字符串格式，因為 HTML 屬性值必須為字符串
         grid.setAttribute('data-click-count', clickCount.toString());
 	}
-
-	// 使用 querySelectorAll 方法選取所有的 '.grid-item' 元素（即所有網格）
-	// 然後使用 forEach 方法遍歷這些元素
 	document.querySelectorAll('.grid-item').forEach(function (grid) {
-        // 為每個網格元素添加一個點擊事件監聽器
-        // 當卡片被點擊時，toggleGridSelection 函數會被執行
         grid.addEventListener('click', toggleGridSelection);
     });
 </script>
-
 </body>
 </html>
