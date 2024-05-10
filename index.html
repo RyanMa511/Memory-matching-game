@@ -1,90 +1,96 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>memory matching game</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+    <title>動態可點擊網格</title> 
     <style>
         * {
-            font-family: Arial;
+            font-family: Arial; 
         }
         header, footer {
-            background-color: #666666;
-            color: #FFFFFF;
-            text-align: center;
-            padding: 10px;
+            background-color: #666666; 
+            color: #FFFFFF; 
+            text-align: center; 
+            padding: 10px; 
         }
         main {
-            padding: 10px 0;
+            padding: 10px 0; 
         }
         .grid-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-gap: 10px;
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px; 
             width: 240px;
-            margin: auto;
+            margin: auto; 
         }
         .grid-item {
-            display: grid;
-            width: center;
-            height: 80px;
-            justify-content: center;
-            align-items: center;
-            background-color: #F0F0F0;
-            cursor: pointer;
+            display: grid; 
+            width: 80px; 
+            height: 80px; 
+            justify-content: center; 
+            align-items: center; 
+            background-color: #F0F0F0; 
+            cursor: pointer; 
+            font-size: 60px;
+            text-indent:10000px;
+            overflow:hidden;
         }
-        .yellow {
-            background-color: #ff0;
+        .showcard {
+            text-indent:0px;
         }
     </style>
 </head>
 <body>
 <header>
-    <h1>memnory matching game</h1>
+	<h1>動態可點擊網格</h1> 
 </header>
 <main>
-    <div class="grid-container">
-        <div id="grid1" class="grid-item"></div>
-        <div id="grid2" class="grid-item"></div>
-        <div id="grid3" class="grid-item"></div>
-        <div id="grid4" class="grid-item"></div>
-        <div id="grid5" class="grid-item"></div>
-        <div id="grid6" class="grid-item"></div>
-        <div id="grid7" class="grid-item"></div>
-        <div id="grid8" class="grid-item"></div>
-        <div id="grid9" class="grid-item"></div>
-        <div id="grid1" class="grid-item"></div>
-        <div id="grid2" class="grid-item"></div>
-        <div id="grid3" class="grid-item"></div>
-        <div id="grid4" class="grid-item"></div>
-        <div id="grid5" class="grid-item"></div>
-        <div id="grid6" class="grid-item"></div>
-        <div id="grid7" class="grid-item"></div>
+    <div class="grid-container" id="grid-container">
     </div>
 </main>
 <footer>
-    <b>good luck</b>
+    <b>單元五練習三</b> 
 </footer>
 <script>
-    function toggleGridSelection(event) {
-        var grid = event.target; 
-        var clickCount = grid.getAttribute('data-click-count') || 0;
-        clickCount = parseInt(clickCount, 10); 
-        grid.classList.remove('yellow');
-        switch (clickCount) {
-            case 0:
-                grid.classList.add('yellow');
-                break;
-            case 1:
-                clickCount = -1;
-                break;
-        }
-        clickCount += 1;
-        grid.setAttribute('data-click-count', clickCount.toString());
+const emoji=[];
+emoji[0]="🙂";
+emoji[1]="☹️";
+emoji[2]="😐";
+emoji[3]="😮";
+emoji[4]="😗";
+emoji[5]="😠";
+emoji[6]="🤐";
+emoji[7]="😶";
+const card=[...emoji,...emoji];
+	function toggleGridSelection(event) {
+		var grid = event.target; 
+		var clickCount = grid.getAttribute('data-click-count') || 0;
+		clickCount = parseInt(clickCount, 10);
+		grid.classList.remove('showcard');
+		switch (clickCount) {
+			case 0:
+				grid.classList.add('showcard');
+				break;
+			case 1:
+				clickCount = -1;
+				break;
+		}
+		clickCount += 1;	
+		grid.setAttribute('data-click-count', clickCount.toString());
+	}
+	const gridSize = 4// prompt('請輸入網格尺寸（例如：4 表示 4x4 網格）:');
+	const gridContainer = document.getElementById('grid-container');
+  	gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+	gridContainer.style.width = `${gridSize * 80 + (gridSize - 1) * 10}px`;
+	for (let i = 1; i <= gridSize * gridSize; i++) {
+		const gridItem = document.createElement('div');
+		gridItem.className = 'grid-item';
+		gridItem.textContent =card[i-1];
+		gridContainer.appendChild(gridItem);
 	}
 	document.querySelectorAll('.grid-item').forEach(function (grid) {
-        grid.addEventListener('click', toggleGridSelection);
-    });
+		grid.addEventListener('click', toggleGridSelection);
+	});
 </script>
 </body>
 </html>
