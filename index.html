@@ -38,19 +38,37 @@
         .showcard {
             text-indent:0px;
         }
+        .button {
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+text-decoration: none;
+display: inline-block;
+font-size: 16px;
+margin: 4px 2px;
+cursor: pointer;
+        }
+
+.button1 {background-color: #04AA6D;}
+
     </style>
 </head>
+
 <body>
 <header>
-	<h1>動態可點擊網格</h1> 
+<h1>Memory Matching Game</h1> 
 </header>
 <main>
     <div class="grid-container" id="grid-container">
     </div>
 </main>
+
 <footer>
-    <b>單元五練習三</b> 
+    <p id="notification" />
 </footer>
+    <center><button class="button button1" id="resetbutton">reset</button><center>
+	    
 <script>
 const emoji=[];
 emoji[0]="🙂";
@@ -62,35 +80,71 @@ emoji[5]="😠";
 emoji[6]="🤐";
 emoji[7]="😶";
 const card=[...emoji,...emoji];
-	function toggleGridSelection(event) {
-		var grid = event.target; 
-		var clickCount = grid.getAttribute('data-click-count') || 0;
-		clickCount = parseInt(clickCount, 10);
-		grid.classList.remove('showcard');
-		switch (clickCount) {
-			case 0:
-				grid.classList.add('showcard');
-				break;
-			case 1:
-				clickCount = -1;
-				break;
-		}
-		clickCount += 1;	
-		grid.setAttribute('data-click-count', clickCount.toString());
+var clickedcard = "";
+    var matchedpair=0;
+    var clickedpair=0;
+    card.sort(()=>0.5-Math.random());
+
+function toggleGridSelection(event) {
+var grid = event.target; 
+if (grid.classList.contains("showcard")){return;}
+grid.classList.remove('showcard');
+grid.classList.add("showcard");
+
+	if (clickedcard == ""){
+		clickedcard = grid;
+	}else if (grid.textContent == clickedcard.textContent){
+			  clickedpair=clickedpair+1;
+			  matchedpair=matchedpair+1;
+			  clickedcard=""
+	}else if (grid.textContent != clickedcard.textContent){
+		      clickedpair=clickedpair+1;
+		      setTimeout(() => {
+				  clickedcard.classList.remove("showcard");
+				  grid.classList.remove("showcard");
+				  clickedcard = ""}, 600);
 	}
-	const gridSize = 4// prompt('請輸入網格尺寸（例如：4 表示 4x4 網格）:');
-	const gridContainer = document.getElementById('grid-container');
-  	gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
-	gridContainer.style.width = `${gridSize * 80 + (gridSize - 1) * 10}px`;
-	for (let i = 1; i <= gridSize * gridSize; i++) {
-		const gridItem = document.createElement('div');
-		gridItem.className = 'grid-item';
-		gridItem.textContent =card[i-1];
-		gridContainer.appendChild(gridItem);
+
+	if (matchedpair==8){
+	    document.getElementById('notification').textContent = "you've won";
 	}
-	document.querySelectorAll('.grid-item').forEach(function (grid) {
-		grid.addEventListener('click', toggleGridSelection);
-	});
+	if (clickedpair==12){
+		clickedpair=clickedpair+1;
+		setTimeout(() => {
+			alert("you're too stupid");
+		},100);
+	}
+	if (grid.textContent != clickedcard.textContent && clickedpair > 12){
+		      clickedpair=clickedpair+1;
+		      setTimeout(() => {
+				  clickedcard.classList.remove("showcard");
+				  grid.classList.remove("showcard");
+				  clickedcard = ""}, 30);
+	}
+
+
+grid.setAttribute('data-click-count', clickCount.toString());
+}
+
+const gridSize = 4
+const gridContainer = document.getElementById('grid-container');
+gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+gridContainer.style.width = `${gridSize * 80 + (gridSize - 1) * 10}px`;
+
+for (let i = 1; i <= gridSize * gridSize; i++) {
+const gridItem = document.createElement('div');
+gridItem.className = 'grid-item';
+gridItem.textContent =card[i-1];
+gridContainer.appendChild(gridItem);
+}
+
+document.querySelectorAll('.grid-item').forEach(function (grid) {
+grid.addEventListener('click', toggleGridSelection);
+});
+document.getElementById("resetbutton").addEventListener('click', function() {
+    location.reload()
+});
+
 </script>
 </body>
 </html>
